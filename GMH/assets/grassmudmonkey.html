@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GrassMudMonkey Droid</title>
+<link href="console.css" rel="stylesheet" type="text/css" />
+</head>
+<body onload="readyload();">
+<div id="box">
+	<div class="wrap">
+		<textarea id="code" style="height:160px"></textarea>
+	</div>
+	<div id="toolbar" align="left">
+		<input type="button" id="runbtn" value="运行(Run)"/>
+		<input type="button" id="clsbtn" value="全清(Clear)"/>
+	</div>
+	<div class="wrap" id="console">
+		<textarea id="output" readonly="readonly" style="height:160px"></textarea>
+	</div>
+</div>
+<textarea id="example">
+//数字1压栈
+1 草-草 草泥马
+//在这里设置一个循环开始的标识
+2 马-草草 草泥草草草草泥泥马
+//复制栈顶元素
+3 草-马草
+//输出当前值
+4 泥马-草泥
+//换行(10)压栈
+5 草草 草泥草泥草马
+//输出字符10
+6 泥马-草草
+//1压栈
+7 草草 草泥马
+//相加栈内两个元素
+8 泥草-草草
+//复制栈顶以便比较
+9 草-马草
+//11压栈
+10 草-草 草泥草泥泥马
+//相减
+11 泥草- 草泥
+//如果是0，跳到最后
+12 马-泥草 草泥草草草泥草泥马
+//跳到开始
+13 马-草马 草泥草草草草泥泥马
+//设置一个标签标识循环结束
+14 马-草草 草泥草草草泥草泥马
+//清空堆栈，打扫卫生，整理整顿
+15 草-马马
+</textarea>
+<script type="text/javascript" src="grassmudmonkey.js"></script>
+<script type="text/javascript">
+var elm = function(e){
+	return document.getElementById(e);
+};
+var output = elm('output');
+GrassMudMonkey.print = function(str){
+	output.value = output.value + str.toString().replace('\n', '\n>>> ');
+};
+elm('code').value = elm('example').value;
+output.value = '>>> Welcome to GrassMudMonkey Console!\n>>> ';
+elm('runbtn').onclick = function(){
+	output.value = ">>> Welcome to GrassMudMonkey Console!\n>>> ";
+	GrassMudMonkey.eval(elm('code').value);
+};
+elm('clsbtn').onclick = function(){
+	code.value = "";
+	output.value = ">>> Welcome to GrassMudMonkey Console!\n>>> ";
+};
+elm('typebtn').onclick = function(){
+	this.value = this.value.replace(/(\->\s*)(\w+)/, function(a, b, c){
+		var old = GrassMudMonkey.type;
+		GrassMudMonkey.type = c;
+		return b + old;
+	});
+};
+/*
+elm('debugbtn').onclick = function(){
+	if (GrassMudMonkey.debugEnable) {
+		GrassMudMonkey.debugEnable = false;
+		this.value = "Debug Mode: Off";
+	} else {
+		GrassMudMonkey.debugEnable = true;
+		this.value = "Debug Mode: On";
+	}
+};
+*/
+elm('cmtbtn').onclick = function(){
+	elm('code').value = elm('example').value;
+};
+elm('exambtn').onclick = function(){
+	elm('code').value = elm('example').value.replace(/[^\u8349\u6CE5\u9A6C]/g, '');
+};
+function readyload(){
+	var height = window.innerHeight - 80;
+	var hh = height/2;
+	if(hh > 160){
+		document.getElementById('code').style.setProperty("height",hh+"px");
+		document.getElementById('output').style.setProperty("height",hh+"px");
+	}
+}
+</script>
+</body>
+</html>
